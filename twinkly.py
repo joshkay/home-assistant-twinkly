@@ -1,15 +1,16 @@
 import sys
 import json
 import urllib.request
+import codecs
 
 ARG_ON = 'on'
 ARG_OFF = 'off'
 ARG_STATE = 'state'
 
-ARG = sys.argv[1]
+ARG_IP = sys.argv[1]
+ARG_ACTION = sys.argv[2]
 
-IP = "192.168.30.29"
-URL = "http://" + IP + "/xled/v1/"
+URL = "http://" + ARG_IP + "/xled/v1/"
 
 LOGIN_URL = URL + "login"
 VERIFY_URL = URL + "verify"
@@ -36,7 +37,8 @@ def processRequest(request):
 
 def processRequestJSON(request):
   loginResponse = processRequest(request)
-  return json.load(loginResponse)
+  reader = codecs.getreader("utf-8")
+  return json.load(reader(loginResponse))
 
 # login to api - get challenge response and auth token
 loginRequest = urllib.request.Request(url = LOGIN_URL, headers = HEADERS, data = formatData(LOGIN_DATA))
@@ -71,9 +73,9 @@ def getState():
   else:
     print(0)
 
-if ARG == ARG_ON:
+if ARG_ACTION == ARG_ON:
   turnOn()
-elif ARG == ARG_OFF:
+elif ARG_ACTION == ARG_OFF:
   turnOff()
-elif ARG == ARG_STATE:
+elif ARG_ACTION == ARG_STATE:
   getState()
