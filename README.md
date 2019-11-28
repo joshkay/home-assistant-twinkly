@@ -9,7 +9,6 @@ Twinkly integration for home assistant
 ```
 switch:
   - platform: command_line
-    name: Twinkly
     switches:
       twinkly:
         command_on: "python3 /config/python_scripts/twinkly.py TWINKLY_IP_HERE on"
